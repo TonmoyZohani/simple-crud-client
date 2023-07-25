@@ -26,8 +26,13 @@ function App() {
 
     axios
       .post(url, newUser, { headers })
-      .then((res) => console.log(res.data))
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log(data);
+        if (data.data.insertedId) {
+          alert("Data added successfully");
+          form.reset();
+        }
+      });
 
     // fetch("http://localhost:5000/users", {
     //   method: "POST",
