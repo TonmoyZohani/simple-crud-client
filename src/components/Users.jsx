@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const loadedUsers = useLoaderData();
@@ -44,9 +45,23 @@ const Users = () => {
       <div>{users.length}</div>
       {users.map((user) => (
         <div style={{ border: "2px solid red" }}>
-          <p key={user._id} onClick={() => handleDelete(user._id)}>
+          <p key={user._id} >
             {" "}
             {user._id} : {user.name} -{" "}
+            <Link to={`/users/${user._id}`}>
+              <span
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "green",
+                  color: "white",
+                  padding: "4px",
+                  borderRadius: "4px",
+                }}
+              >
+                Update
+              </span>
+            </Link>
+
             <span
               style={{
                 cursor: "pointer",
