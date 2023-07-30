@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Users = () => {
-  const users = useLoaderData();
+  const loadedUsers = useLoaderData();
+
+  const [users, setUsers] = useState(loadedUsers);
+
+  console.log(users);
 
   const handleDelete = (_id) => {
     console.log(_id);
+
+    const newUsers = users.filter((user) => user._id !== _id);
+
+    setUsers(newUsers);
+
+    console.log(newUsers);
 
     axios
       .delete(`http://localhost:5000/users/${_id}`)
@@ -33,22 +43,24 @@ const Users = () => {
     <>
       <div>{users.length}</div>
       {users.map((user) => (
-        <p key={user._id} onClick={() => handleDelete(user._id)}>
-          {" "}
-          {user._id} : {user.name} -{" "}
-          <span
-            style={{
-              cursor: "pointer",
-              backgroundColor: "red",
-              color: "white",
-              padding: "4px",
-              borderRadius: "4px",
-            }}
-            onClick={() => handleDelete(user._id)}
-          >
-            Delete
-          </span>
-        </p>
+        <div style={{ border: "2px solid red" }}>
+          <p key={user._id} onClick={() => handleDelete(user._id)}>
+            {" "}
+            {user._id} : {user.name} -{" "}
+            <span
+              style={{
+                cursor: "pointer",
+                backgroundColor: "red",
+                color: "white",
+                padding: "4px",
+                borderRadius: "4px",
+              }}
+              onClick={() => handleDelete(user._id)}
+            >
+              Delete
+            </span>
+          </p>
+        </div>
       ))}
     </>
   );
