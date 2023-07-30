@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Users = () => {
   const users = useLoaderData();
@@ -10,7 +11,21 @@ const Users = () => {
 
     axios
       .delete(`http://localhost:5000/users/${_id}`)
-      .then((res) => console.log("User deleted successfully", res))
+      .then((res) =>
+        res.status === 200
+          ? Swal.fire({
+              title: "Success!",
+              text: "User deleted successfully",
+              icon: "success",
+              confirmButtonText: "Cool",
+            })
+          : Swal.fire({
+              title: "Error!",
+              text: "Failed to delete user",
+              icon: "error",
+              confirmButtonText: "Okay",
+            })
+      )
       .catch((err) => console.log(err));
   };
 
@@ -22,10 +37,16 @@ const Users = () => {
           {" "}
           {user._id} : {user.name} -{" "}
           <span
-            style={{ cursor: "pointer" }}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "red",
+              color: "white",
+              padding: "4px",
+              borderRadius: "4px",
+            }}
             onClick={() => handleDelete(user._id)}
           >
-            Button
+            Delete
           </span>
         </p>
       ))}
